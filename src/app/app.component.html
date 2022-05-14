@@ -30,6 +30,81 @@
 
 <mat-card class="example-card">
   <mat-card-content class="contentBody">
-   
+   <h2>Country Details</h2>
+   <hr>
+
+   <form [formGroup]="myform" (ngSubmit)="OnSearch(myform.value)">
+    <mat-form-field class="SearchDD" appearance="standard">
+      <mat-label>Select Country</mat-label>
+      <mat-select formControlName="Search" required placeholder="Search">
+        <mat-option *ngFor="let item of SearchDropDownData" title="{{item.name}} ({{item.code}})" [value]="item.code">
+          {{item.name}} ({{item.code}})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="SubmitBtn">
+      <button type="submit" class="btnsbmt" mat-raised-button color="primary">Search</button>
+      <button type="reset" (click)="OnReset()" mat-raised-button color="warn">Reset</button>
+    </div>
+   </form>
+
+   <br>
+
+   <mat-form-field appearance="standard">
+    <mat-label>Quick Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Quick search filter" #input>
+  </mat-form-field>
+  <mat-progress-bar *ngIf="IsLoading" mode="indeterminate"></mat-progress-bar>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="Name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+      </ng-container>
+  
+      <!-- Code Column -->
+      <ng-container matColumnDef="Code">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Code </th>
+        <td mat-cell *matCellDef="let row"> {{row.code}} </td>
+      </ng-container>
+  
+      <!-- Capital Column -->
+      <ng-container matColumnDef="Capital">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Capital </th>
+        <td mat-cell *matCellDef="let row"> {{row.capital}} </td>
+      </ng-container>
+  
+      <!-- Currency Column -->
+      <ng-container matColumnDef="Currency">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Currency </th>
+        <td mat-cell *matCellDef="let row"> {{row.currency}} </td>
+      </ng-container>
+
+      <!-- Emoji Column -->
+      <ng-container matColumnDef="Emoji">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Emoji </th>
+        <td mat-cell *matCellDef="let row"> {{row.emoji}} </td>
+      </ng-container>
+
+      <!-- Native Column -->
+      <ng-container matColumnDef="Native">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Native </th>
+        <td mat-cell *matCellDef="let row"> {{row.native}} </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      </tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  </div>
+
   </mat-card-content>
 </mat-card>
